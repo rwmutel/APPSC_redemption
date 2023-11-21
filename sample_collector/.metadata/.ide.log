@@ -1,0 +1,264 @@
+2023-11-21 13:36:32,487 [INFO] Activator:176 - 
+
+
+2023-11-21 13:36:32,490 [INFO] Activator:177 - !SESSION log4j initialized
+2023-11-21 13:36:34,945 [INFO] LogOutputStream:77 - [STDOUT_REDIRECT] 
+2023-11-21 13:36:39,056 [INFO] ApplicationProperties:184 - Using Application install path: /opt/stm32cubeide/plugins/com.st.stm32cube.common.mx_6.9.2.202309101412
+2023-11-21 13:36:39,088 [INFO] DbMcusXml:78 - Set database path to: /opt/stm32cubeide/plugins/com.st.stm32cube.common.mx_6.9.2.202309101412//db//mcu/
+2023-11-21 13:36:39,089 [INFO] ApiDb:274 - Set plugin database path to: /opt/stm32cubeide/plugins/com.st.stm32cube.common.mx_6.9.2.202309101412//db//plugins/boardmanager/
+2023-11-21 13:36:39,089 [WARN] ApiDb:259 - Overriding images path with different value:  => /opt/stm32cubeide/plugins/com.st.stm32cube.common.mx_6.9.2.202309101412//db//plugins/mcufinder/images/
+2023-11-21 13:36:40,708 [WARN] ApiFinderProperties:113 - /root/.stmcufinder/plugins/mcufinder/mcu/mcuFinder.mfd doesn't exist
+2023-11-21 13:36:40,709 [INFO] ApiDb:250 - Set database path to: /root/.stmcufinder/plugins/mcufinder//mcu/
+2023-11-21 13:36:40,711 [INFO] DbMcusAds:125 - Set database path to: /root/.stmcufinder/plugins/mcufinder//mcu/
+2023-11-21 13:36:40,716 [INFO] CrossReferenceDbSqlite:203 - Set database path to: /root/.stmcufinder/plugins/mcufinder//mcu/cs/
+2023-11-21 13:36:40,970 [INFO] RulesReader:64 - Compatibility file has been processed (293 Rules)
+2023-11-21 13:36:41,085 [INFO] DbMcusXml:78 - Set database path to: /opt/stm32cubeide/plugins/com.st.stm32cube.common.mx_6.9.2.202309101412//db//mcu/
+2023-11-21 13:36:41,085 [INFO] ApiDb:274 - Set plugin database path to: /opt/stm32cubeide/plugins/com.st.stm32cube.common.mx_6.9.2.202309101412//db//plugins/boardmanager/
+2023-11-21 13:36:41,086 [INFO] ApiDb:261 - Set plugin images path to: /opt/stm32cubeide/plugins/com.st.stm32cube.common.mx_6.9.2.202309101412//db//plugins/mcufinder/images/
+2023-11-21 13:36:41,086 [WARN] DbFile:41 - Overriding database path with different value: /root/.stmcufinder/plugins/mcufinder/ => /root/.stmcufinder/plugins/mcufinder
+2023-11-21 13:36:41,087 [INFO] ApiDb:250 - Set database path to: /root/.stmcufinder/plugins/mcufinder//mcu/
+2023-11-21 13:36:41,087 [WARN] DbFile:41 - Overriding database path with different value: /root/.stmcufinder/plugins/mcufinder/ => /root/.stmcufinder/plugins/mcufinder
+2023-11-21 13:36:41,087 [INFO] DbMcusAds:125 - Set database path to: /root/.stmcufinder/plugins/mcufinder//mcu/
+2023-11-21 13:36:41,087 [WARN] DbFile:41 - Overriding database path with different value: /root/.stmcufinder/plugins/mcufinder/ => /root/.stmcufinder/plugins/mcufinder
+2023-11-21 13:36:41,087 [WARN] DbFile:41 - Overriding database path with different value: /root/.stmcufinder/plugins/mcufinder/ => /root/.stmcufinder/plugins/mcufinder
+2023-11-21 13:36:41,088 [INFO] CrossReferenceDbSqlite:203 - Set database path to: /root/.stmcufinder/plugins/mcufinder//mcu/cs/
+2023-11-21 13:36:41,282 [INFO] MainPanel:262 - HeapMemory: 268435456
+2023-11-21 13:36:41,516 [INFO] DbMcusXml:78 - Set database path to: /opt/stm32cubeide/plugins/com.st.stm32cube.common.mx_6.9.2.202309101412//db//mcu/
+2023-11-21 13:36:41,516 [INFO] ApiDb:274 - Set plugin database path to: /opt/stm32cubeide/plugins/com.st.stm32cube.common.mx_6.9.2.202309101412//db//plugins/boardmanager/
+2023-11-21 13:36:41,517 [INFO] ApiDb:261 - Set plugin images path to: /opt/stm32cubeide/plugins/com.st.stm32cube.common.mx_6.9.2.202309101412//db//plugins/mcufinder/images/
+2023-11-21 13:36:41,518 [WARN] DbFile:41 - Overriding database path with different value: /root/.stmcufinder/plugins/mcufinder/ => /root/.stmcufinder/plugins/mcufinder
+2023-11-21 13:36:41,518 [INFO] ApiDb:250 - Set database path to: /root/.stmcufinder/plugins/mcufinder//mcu/
+2023-11-21 13:36:41,519 [WARN] DbFile:41 - Overriding database path with different value: /root/.stmcufinder/plugins/mcufinder/ => /root/.stmcufinder/plugins/mcufinder
+2023-11-21 13:36:41,519 [INFO] DbMcusAds:125 - Set database path to: /root/.stmcufinder/plugins/mcufinder//mcu/
+2023-11-21 13:36:41,519 [WARN] DbFile:41 - Overriding database path with different value: /root/.stmcufinder/plugins/mcufinder/ => /root/.stmcufinder/plugins/mcufinder
+2023-11-21 13:36:41,520 [WARN] DbFile:41 - Overriding database path with different value: /root/.stmcufinder/plugins/mcufinder/ => /root/.stmcufinder/plugins/mcufinder
+2023-11-21 13:36:41,520 [INFO] CrossReferenceDbSqlite:203 - Set database path to: /root/.stmcufinder/plugins/mcufinder//mcu/cs/
+2023-11-21 13:36:41,558 [INFO] ApplicationProperties:184 - Using Application install path: /opt/stm32cubeide/plugins/com.st.stm32cube.common.mx_6.9.2.202309101412
+2023-11-21 13:36:41,562 [INFO] PluginManage:196 - Search for loadable plugins [exclusion list=, ]
+2023-11-21 13:36:41,565 [INFO] PluginManage:310 - Check plugin analytics
+2023-11-21 13:36:42,021 [INFO] AnalyticsPlugin:253 - Accepted Software Licenses: 
+2023-11-21 13:36:42,021 [INFO] AnalyticsPlugin:255 - Accepted CMSIS Pack Licenses: 
+2023-11-21 13:36:42,022 [INFO] AnalyticsPlugin:257 - Accepted Firmware Licenses: 
+2023-11-21 13:36:42,028 [INFO] PluginManage:359 - Loaded plugin analytics (category:tool,tabindex:-1)
+2023-11-21 13:36:42,029 [INFO] PluginManage:310 - Check plugin cadmodel
+2023-11-21 13:36:42,114 [INFO] CADModel:105 - Init CAD model plugin
+2023-11-21 13:36:42,115 [INFO] PluginManage:359 - Loaded plugin cadmodel (category:power,tabindex:5)
+2023-11-21 13:36:42,115 [INFO] PluginManage:310 - Check plugin clock
+2023-11-21 13:36:42,137 [INFO] PluginManage:359 - Loaded plugin clock (category:base,tabindex:2)
+2023-11-21 13:36:42,138 [INFO] PluginManage:310 - Check plugin ddr
+2023-11-21 13:36:42,143 [INFO] PluginManage:359 - Loaded plugin ddr (category:tool,tabindex:6)
+2023-11-21 13:36:42,143 [INFO] PluginManage:310 - Check plugin filemanager
+2023-11-21 13:36:42,409 [INFO] PluginManage:359 - Loaded plugin filemanager (category:base,tabindex:10)
+2023-11-21 13:36:42,409 [INFO] PluginManage:310 - Check plugin ipmanager
+2023-11-21 13:36:42,419 [INFO] PluginManage:359 - Loaded plugin ipmanager (category:base,tabindex:5)
+2023-11-21 13:36:42,420 [INFO] PluginManage:310 - Check plugin lpbam
+2023-11-21 13:36:42,438 [INFO] PluginManage:359 - Loaded plugin lpbam (category:base,tabindex:0)
+2023-11-21 13:36:42,438 [INFO] PluginManage:310 - Check plugin memorymap
+2023-11-21 13:36:42,461 [INFO] PluginManage:359 - Loaded plugin memorymap (category:base,tabindex:4)
+2023-11-21 13:36:42,461 [INFO] PluginManage:310 - Check plugin pinoutandconfiguration
+2023-11-21 13:36:42,474 [INFO] PluginManage:359 - Loaded plugin pinoutandconfiguration (category:base,tabindex:1)
+2023-11-21 13:36:42,475 [INFO] PluginManage:310 - Check plugin pinoutconfig
+2023-11-21 13:36:42,649 [WARN] SupportedApi:132 - Cannot load RTOS API schema: s4s-elt-must-match.1: The content of 'definitions' must match (annotation?, (simpleType | complexType)?, (unique | key | keyref)*)). A problem was found starting at: attribute.
+2023-11-21 13:36:43,074 [INFO] PluginManage:359 - Loaded plugin pinoutconfig (category:base,tabindex:0)
+2023-11-21 13:36:43,075 [INFO] PluginManage:310 - Check plugin power
+2023-11-21 13:36:43,096 [INFO] PluginManage:359 - Loaded plugin power (category:power,tabindex:4)
+2023-11-21 13:36:43,097 [INFO] PluginManage:310 - Check plugin projectmanager
+2023-11-21 13:36:43,125 [INFO] PluginManage:359 - Loaded plugin projectmanager (category:projectmanager,tabindex:3)
+2023-11-21 13:36:43,126 [INFO] PluginManage:310 - Check plugin thirdparty
+2023-11-21 13:36:43,343 [INFO] PluginManage:359 - Loaded plugin thirdparty (category:base,tabindex:-1)
+2023-11-21 13:36:43,343 [WARN] IntegrityCheckThread:84 - waiting for thirdparty lock release [integrity check]
+2023-11-21 13:36:43,343 [INFO] IntegrityCheckThread:86 - entering critical section [integrity check]
+2023-11-21 13:36:43,344 [INFO] PluginManage:310 - Check plugin tools
+2023-11-21 13:36:43,344 [INFO] ThirdPartyUpdaterWithRetryManager:70 - Updater plugin not ready yet. [1/15]
+2023-11-21 13:36:43,347 [INFO] PluginManage:359 - Loaded plugin tools (category:base,tabindex:7)
+2023-11-21 13:36:43,347 [INFO] PluginManage:310 - Check plugin tutovideos
+2023-11-21 13:36:43,622 [INFO] PluginManage:359 - Loaded plugin tutovideos (category:base,tabindex:-1)
+2023-11-21 13:36:43,623 [INFO] PluginManage:310 - Check plugin updater
+2023-11-21 13:36:43,639 [INFO] PluginManage:359 - Loaded plugin updater (category:base,tabindex:12)
+2023-11-21 13:36:43,639 [INFO] PluginManage:310 - Check plugin userauth
+2023-11-21 13:36:43,646 [INFO] UserAuth:113 - Init User Auth plugin
+2023-11-21 13:36:43,646 [INFO] PluginManage:359 - Loaded plugin userauth (category:base,tabindex:14)
+2023-11-21 13:36:43,647 [INFO] PluginManage:283 - PluginManage : Loaded plugins [17]
+2023-11-21 13:36:43,944 [INFO] PinOutPanel:1499 - setPackage(No Configuration,No Configuration)
+2023-11-21 13:36:44,089 [INFO] CADModel:165 - CPN selected for project level
+2023-11-21 13:36:44,089 [INFO] CADModel:114 - Register for checkConnection events
+2023-11-21 13:36:44,111 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,111 [INFO] PluginManager:220 - loadIPPluginJar : add i2s
+2023-11-21 13:36:44,114 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,114 [INFO] PluginManager:220 - loadIPPluginJar : add tsc
+2023-11-21 13:36:44,121 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,122 [INFO] PluginManager:220 - loadIPPluginJar : add gpio
+2023-11-21 13:36:44,124 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,125 [INFO] PluginManager:220 - loadIPPluginJar : add tim
+2023-11-21 13:36:44,128 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,129 [INFO] PluginManager:220 - loadIPPluginJar : add gfxmmu
+2023-11-21 13:36:44,132 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,132 [INFO] PluginManager:220 - loadIPPluginJar : add i2c
+2023-11-21 13:36:44,135 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,136 [INFO] PluginManager:220 - loadIPPluginJar : add cryp
+2023-11-21 13:36:44,138 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,138 [INFO] PluginManager:220 - loadIPPluginJar : add tracer_emb
+2023-11-21 13:36:44,145 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,146 [INFO] PluginManager:220 - loadIPPluginJar : add resmgrutility
+2023-11-21 13:36:44,150 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,150 [INFO] PluginManager:220 - loadIPPluginJar : add sai
+2023-11-21 13:36:44,157 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,157 [INFO] PluginManager:220 - loadIPPluginJar : add stm32_wpan
+2023-11-21 13:36:44,161 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,161 [INFO] PluginManager:220 - loadIPPluginJar : add usbx
+2023-11-21 13:36:44,163 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,163 [INFO] PluginManager:220 - loadIPPluginJar : add ltdc
+2023-11-21 13:36:44,170 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,171 [INFO] PluginManager:220 - loadIPPluginJar : add gic
+2023-11-21 13:36:44,174 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,174 [INFO] PluginManager:220 - loadIPPluginJar : add ts
+2023-11-21 13:36:44,182 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,182 [INFO] PluginManager:220 - loadIPPluginJar : add dma
+2023-11-21 13:36:44,186 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,186 [INFO] PluginManager:220 - loadIPPluginJar : add dfsdm
+2023-11-21 13:36:44,189 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,190 [INFO] PluginManager:220 - loadIPPluginJar : add lorawan
+2023-11-21 13:36:44,192 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,192 [INFO] PluginManager:220 - loadIPPluginJar : add fatfs
+2023-11-21 13:36:44,197 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,197 [INFO] PluginManager:220 - loadIPPluginJar : add nvic
+2023-11-21 13:36:44,199 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,200 [INFO] PluginManager:220 - loadIPPluginJar : add quadspi
+2023-11-21 13:36:44,203 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,203 [INFO] PluginManager:220 - loadIPPluginJar : add ucpd
+2023-11-21 13:36:44,206 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,206 [INFO] PluginManager:220 - loadIPPluginJar : add spi
+2023-11-21 13:36:44,215 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,215 [INFO] PluginManager:220 - loadIPPluginJar : add mdma
+2023-11-21 13:36:44,219 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,220 [INFO] PluginManager:220 - loadIPPluginJar : add dma3
+2023-11-21 13:36:44,229 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,233 [INFO] PluginManager:220 - loadIPPluginJar : add plateformsettings
+2023-11-21 13:36:44,241 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,241 [INFO] PluginManager:220 - loadIPPluginJar : add freertos
+2023-11-21 13:36:44,243 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,244 [INFO] PluginManager:220 - loadIPPluginJar : add genericplugin
+2023-11-21 13:36:44,248 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,248 [INFO] PluginManager:220 - loadIPPluginJar : add gtzc
+2023-11-21 13:36:44,257 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,258 [INFO] PluginManager:220 - loadIPPluginJar : add linkedlist
+2023-11-21 13:36:44,261 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,261 [INFO] PluginManager:220 - loadIPPluginJar : add pdm2pcm
+2023-11-21 13:36:44,265 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,265 [INFO] PluginManager:220 - loadIPPluginJar : add ipddr
+2023-11-21 13:36:44,270 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,270 [INFO] PluginManager:220 - loadIPPluginJar : add opamp
+2023-11-21 13:36:44,277 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,277 [INFO] PluginManager:220 - loadIPPluginJar : add adc
+2023-11-21 13:36:44,280 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,280 [INFO] PluginManager:220 - loadIPPluginJar : add hash
+2023-11-21 13:36:44,284 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,285 [INFO] PluginManager:220 - loadIPPluginJar : add touchsensing
+2023-11-21 13:36:44,287 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,287 [INFO] PluginManager:220 - loadIPPluginJar : add comp
+2023-11-21 13:36:44,291 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,292 [INFO] PluginManager:220 - loadIPPluginJar : add openamp
+2023-11-21 13:36:44,295 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,295 [INFO] PluginManager:220 - loadIPPluginJar : add aes
+2023-11-21 13:36:44,301 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,301 [INFO] PluginManager:220 - loadIPPluginJar : add fmc
+2023-11-21 13:36:44,304 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,304 [INFO] PluginManager:220 - loadIPPluginJar : add i3c
+2023-11-21 13:36:44,309 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,310 [INFO] PluginManager:220 - loadIPPluginJar : add can
+2023-11-21 13:36:44,314 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2023-11-21 13:36:44,314 [INFO] PluginManager:220 - loadIPPluginJar : add usart
+2023-11-21 13:36:44,434 [INFO] CADModel:165 - CPN selected for project level
+2023-11-21 13:36:44,434 [INFO] CADModel:114 - Register for checkConnection events
+2023-11-21 13:36:44,434 [FATAL] Updater:308 - Updater called before beeing initialized
+2023-11-21 13:36:44,434 [ERROR] CADModel:125 - Updater not yet initialized, retry later 
+2023-11-21 13:36:44,656 [INFO] CADModel:165 - CPN selected for project level
+2023-11-21 13:36:44,656 [INFO] CADModel:114 - Register for checkConnection events
+2023-11-21 13:36:44,656 [FATAL] Updater:308 - Updater called before beeing initialized
+2023-11-21 13:36:44,657 [ERROR] CADModel:125 - Updater not yet initialized, retry later 
+2023-11-21 13:36:44,665 [FATAL] Updater:308 - Updater called before beeing initialized
+2023-11-21 13:36:44,807 [FATAL] Updater:308 - Updater called before beeing initialized
+2023-11-21 13:36:44,817 [INFO] DbMcusAds:53 - JSON generation date=Thu Sep 30 09:55:09 EEST 2021 (1632984909247)
+2023-11-21 13:36:44,817 [FATAL] Updater:308 - Updater called before beeing initialized
+2023-11-21 13:36:44,889 [WARN] DetailPanel:346 - Failed to get advertising image, set to default
+2023-11-21 13:36:45,079 [FATAL] Updater:308 - Updater called before beeing initialized
+2023-11-21 13:36:45,082 [FATAL] Updater:308 - Updater called before beeing initialized
+2023-11-21 13:36:45,082 [FATAL] Updater:308 - Updater called before beeing initialized
+2023-11-21 13:36:45,083 [WARN] DetailPanel:346 - Failed to get advertising image, set to default
+2023-11-21 13:36:45,085 [FATAL] Updater:308 - Updater called before beeing initialized
+2023-11-21 13:36:45,148 [ERROR] Updater:1120 - MainUpdater not yet initialized. External WinMGr cannot be set.
+2023-11-21 13:36:45,153 [INFO] Updater:1056 - Updater Version found : 6.9.2
+2023-11-21 13:36:45,188 [INFO] ApplicationProperties:184 - Using Application install path: /opt/stm32cubeide/plugins/com.st.stm32cube.common.mx_6.9.2.202309101412
+2023-11-21 13:36:45,245 [INFO] MainUpdater:521 - Copy updater definitions from MX database
+2023-11-21 13:36:45,320 [INFO] MainUpdater:554 - Copy flag file definitions from MX database
+2023-11-21 13:36:45,322 [INFO] MainUpdater:570 - Copy thirdparty index definitions from MX database
+2023-11-21 13:36:45,323 [INFO] MainUpdater:589 - Copy default thirdparty db definitions from MX database
+2023-11-21 13:36:45,394 [INFO] MainUpdater:2868 - connection check result : 10
+2023-11-21 13:36:45,395 [INFO] MainUpdater:3562 - Updater definition file requires update
+2023-11-21 13:36:45,396 [INFO] MainUpdater:285 - Updater Check For Update Now.
+2023-11-21 13:36:45,397 [INFO] MicroXplorer:498 - Change Database Version : DB.6.0.92
+2023-11-21 13:36:45,409 [INFO] McuFinderGlobals:63 - Set McuFinder mode to 2 (CubeIDE integrated)
+2023-11-21 13:36:45,409 [INFO] UserAuth:179 - activating auth plugin
+2023-11-21 13:36:45,419 [INFO] ServerAccessManage:473 - Download File updaters.zip
+2023-11-21 13:36:45,420 [INFO] UserAuth:393 - Internet connection configuration mode: 1
+2023-11-21 13:36:45,469 [INFO] JxBrowserEngine:151 - Initiate JxBrowser Engine with user profile folder
+2023-11-21 13:36:45,574 [INFO] FileExtend:240 - Unzip File : updaters.zip
+2023-11-21 13:36:45,575 [INFO] FileExtend:255 - Standard Zip Deflate
+2023-11-21 13:36:45,788 [INFO] ServerAccessManage:473 - Download File PacksControlFlags.xml
+2023-11-21 13:36:45,929 [INFO] ServerAccessManage:473 - Download File cubemx.pidx
+2023-11-21 13:36:46,063 [INFO] ServerAccessManage:473 - Download File STMicroelectronics.FP-ATR-ASTRA1.pdsc
+2023-11-21 13:36:46,204 [INFO] ServerAccessManage:473 - Download File STMicroelectronics.FP-ATR-SIGFOX1.pdsc
+2023-11-21 13:36:46,349 [WARN] MainUpdater:1189 - Updater busy. Cannot search thirdparties
+2023-11-21 13:36:46,349 [INFO] ServerAccessManage:473 - Download File STMicroelectronics.FP-SNS-FLIGHT1.pdsc
+2023-11-21 13:36:46,350 [INFO] ThirdPartyUpdaterWithRetryManager:96 - Updater plugin is busy. [1/15]
+2023-11-21 13:36:46,468 [INFO] ServerAccessManage:473 - Download File STMicroelectronics.FP-SNS-MOTENV1.pdsc
+2023-11-21 13:36:46,639 [INFO] ServerAccessManage:473 - Download File STMicroelectronics.FP-SNS-MOTENVWB1.pdsc
+2023-11-21 13:36:46,778 [INFO] ServerAccessManage:473 - Download File STMicroelectronics.FP-SNS-SMARTAG2.pdsc
+2023-11-21 13:36:46,827 [INFO] ServerAccessManage:473 - Download File STMicroelectronics.X-CUBE-AI.pdsc
+2023-11-21 13:36:47,306 [INFO] ServerAccessManage:473 - Download File STMicroelectronics.X-CUBE-ALS.pdsc
+2023-11-21 13:36:47,401 [INFO] ServerAccessManage:473 - Download File STMicroelectronics.X-CUBE-BLE1.pdsc
+2023-11-21 13:36:48,033 [ERROR] ServerAccessManage:1089 - Problem, file not found on Server
+2023-11-21 13:36:48,061 [INFO] ServerAccessManage:473 - Download File STMicroelectronics.X-CUBE-BLE2.pdsc
+2023-11-21 13:36:48,080 [ERROR] ExternalUserPreferencesManager:606 - Error while get path from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,081 [ERROR] ExternalUserPreferencesManager:336 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,081 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,093 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,107 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,112 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,123 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,129 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,160 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,166 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,187 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,194 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,206 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,215 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,226 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,231 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,239 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,245 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,258 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,267 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,381 [INFO] ServerAccessManage:473 - Download File STMicroelectronics.X-CUBE-BLEMGR.pdsc
+2023-11-21 13:36:48,407 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,423 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,508 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,514 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,526 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,532 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,632 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,637 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,742 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,747 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,755 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,761 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,859 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,863 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,876 [INFO] ServerAccessManage:473 - Download File STMicroelectronics.X-CUBE-DISPLAY.pdsc
+2023-11-21 13:36:48,891 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,897 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,911 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,918 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,950 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
+2023-11-21 13:36:48,950 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 
+2023-11-21 13:36:48,956 [ERROR] ExternalUserPreferencesManager:560 - Error while get preference info from external application: Cannot invoke "com.st.stm32cube.common.mx.MxActivator.getBundle()" because the return value of "com.st.stm32cube.common.mx.MxActivator.getDefault()" is null
