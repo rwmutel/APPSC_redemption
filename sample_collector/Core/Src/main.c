@@ -53,7 +53,6 @@ TIM_HandleTypeDef htim1;
 //#define buf_size 8096
 #define buf_size 8096
 uint16_t adc1_buf[buf_size] = {};
-char str_buf[5 * buf_size] = {};
 bool writing = false;
 bool waiting_btn = true;
 /* USER CODE END PV */
@@ -120,7 +119,7 @@ int main(void)
 	if (writing) {
 	  uint32_t n = 0;
 	  for (uint32_t i = 0; i < buf_size; i++) {
-        n = sprintf(a, "%u ", i);
+        n = sprintf(a, "%u ", adc1_buf[i]);
         while (CDC_Transmit_FS(a, n) == USBD_BUSY) {}
 	  }
 	  writing = false;
