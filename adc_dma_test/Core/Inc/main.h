@@ -61,6 +61,18 @@ void Error_Handler(void);
 #define BLUE_LED_GPIO_Port GPIOE
 #define RED_LED_Pin GPIO_PIN_9
 #define RED_LED_GPIO_Port GPIOE
+#define LCD_CS_Pin GPIO_PIN_12
+#define LCD_CS_GPIO_Port GPIOB
+#define LCD_DC_Pin GPIO_PIN_13
+#define LCD_DC_GPIO_Port GPIOB
+#define LCD_RST_Pin GPIO_PIN_14
+#define LCD_RST_GPIO_Port GPIOB
+#define OPPOSITEHIT_BTN_Pin GPIO_PIN_9
+#define OPPOSITEHIT_BTN_GPIO_Port GPIOD
+#define OPPOSITEHIT_BTN_EXTI_IRQn EXTI9_5_IRQn
+#define TABLEHIT_BTN_Pin GPIO_PIN_10
+#define TABLEHIT_BTN_GPIO_Port GPIOD
+#define TABLEHIT_BTN_EXTI_IRQn EXTI15_10_IRQn
 
 /* USER CODE BEGIN Private defines */
 
