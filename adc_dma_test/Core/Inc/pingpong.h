@@ -5,6 +5,9 @@
 
 #ifndef ADC_DMA_TEST_PINGPONG_H
 #define ADC_DMA_TEST_PINGPONG_H
+
+#define PP_TIMEOUT_TICKS 1000
+
 typedef enum state_t {
     START, R_SERVE, L_SERVE, R_WAIT, L_WAIT, R_TURN, L_TURN, UNSURE, END
 } state_t;
@@ -34,7 +37,7 @@ void print_score_text(LCD5110_display *lcd_conf, const char *str) {
     LCD5110_refresh(lcd_conf);
 }
 
-void update_score(state_t winner, LCD5110_display* lcd_conf) {
+void update_score(LCD5110_display* lcd_conf, state_t winner) {
     if (winner == L_SERVE) {
         l_score++;
         if (r_score == 10 && l_score == 10) {
@@ -108,19 +111,19 @@ void switch_pp_state(LCD5110_display* lcd_conf) {
         } else if (state == L_SERVE) {
             state = L_WAIT;
         } else if (state == R_SERVE) {
-            update_score(L_SERVE, lcd_conf);
+            update_score(lcd_conf, L_SERVE);
         } else if (state == L_WAIT) {
-            update_score(R_SERVE, lcd_conf);
+            update_score(lcd_conf, R_SERVE);
         } else if (state == R_WAIT) {
             state = L_TURN;
         } else if (state == L_TURN) {
-            update_score(R_SERVE, lcd_conf);
+            update_score(lcd_conf, R_SERVE);
         } else if (state == R_TURN) {
             state = L_TURN;
         };
         print_current_state(lcd_conf);
     }
-        // oppositehit (right side)
+    // oppositehit (right side)
     else if (!HAL_GPIO_ReadPin(OPPOSITEHIT_BTN_GPIO_Port,
                                OPPOSITEHIT_BTN_Pin)) {
         if (state == START) {
@@ -129,17 +132,30 @@ void switch_pp_state(LCD5110_display* lcd_conf) {
         } else if (state == R_SERVE) {
             state = R_WAIT;
         } else if (state == L_SERVE) {
-            update_score(R_SERVE, lcd_conf);
+            update_score(lcd_conf, R_SERVE);
         } else if (state == R_WAIT) {
-            update_score(L_SERVE, lcd_conf);
+            update_score(lcd_conf, L_SERVE);
         } else if (state == L_WAIT) {
             state = R_TURN;
         } else if (state == R_TURN) {
-            update_score(L_SERVE, lcd_conf);
+            update_score(lcd_conf, L_SERVE);
         } else if (state == L_TURN) {
             state = R_TURN;
         }
         print_current_state(lcd_conf);
     }
+}
+
+void check_timeout(LCD5110_display* lcd_conf, state_t init_state) {
+    if (init_state == R_WAIT && init_state == state) {
+        update_score(lcd_conf, L_SERVE);
+    } else if (init_state == L_WAIT && init_state == state) {
+        update_score(lcd_conf, R_SERVE);
+    } else if (init_state == R_TURN && init_state == state) {
+        update_score(lcd_conf, L_SERVE);
+    } else if (init_state == L_TURN && init_state == state) {
+        update_score(lcd_conf, R_SERVE);
+    }
+    print_current_state(lcd_conf);
 }
 #endif //ADC_DMA_TEST_PINGPONG_H

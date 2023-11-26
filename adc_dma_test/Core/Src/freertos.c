@@ -65,6 +65,7 @@ volatile bool deuce = false;
 osThreadId samplingTaskHandle;
 osThreadId inferencingTaskHandle;
 osMessageQId inferenceTaskQueueHandle;
+osTimerId timeoutTimerHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -72,11 +73,15 @@ osMessageQId inferenceTaskQueueHandle;
 
 void StartSamplingTask(void const * argument);
 void StartInferencingTask(void const * argument);
+void timeoutCallback(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* GetIdleTaskMemory prototype (linked to static allocation support) */
 void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize );
+
+/* GetTimerTaskMemory prototype (linked to static allocation support) */
+void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTaskStackBuffer, uint32_t *pulTimerTaskStackSize );
 
 /* USER CODE BEGIN GET_IDLE_TASK_MEMORY */
 static StaticTask_t xIdleTaskTCBBuffer;
@@ -90,6 +95,19 @@ void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackTy
   /* place for user code */
 }
 /* USER CODE END GET_IDLE_TASK_MEMORY */
+
+/* USER CODE BEGIN GET_TIMER_TASK_MEMORY */
+static StaticTask_t xTimerTaskTCBBuffer;
+static StackType_t xTimerStack[configTIMER_TASK_STACK_DEPTH];
+
+void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTaskStackBuffer, uint32_t *pulTimerTaskStackSize )
+{
+  *ppxTimerTaskTCBBuffer = &xTimerTaskTCBBuffer;
+  *ppxTimerTaskStackBuffer = &xTimerStack[0];
+  *pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
+  /* place for user code */
+}
+/* USER CODE END GET_TIMER_TASK_MEMORY */
 
 /**
   * @brief  FreeRTOS initialization
@@ -118,6 +136,11 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
+
+  /* Create the timer(s) */
+  /* definition and creation of timeoutTimer */
+  osTimerDef(timeoutTimer, timeoutCallback);
+  timeoutTimerHandle = osTimerCreate(osTimer(timeoutTimer), osTimerOnce, NULL);
 
   /* USER CODE BEGIN RTOS_TIMERS */
   /* start timers, add new ones, ... */
@@ -159,7 +182,7 @@ void MX_FREERTOS_Init(void) {
 void StartSamplingTask(void const * argument)
 {
   /* USER CODE BEGIN StartSamplingTask */
-  HAL_ADC_Start_DMA(&hadc1, dma_buffer, 100);
+//  HAL_ADC_Start_DMA(&hadc1, dma_buffer, 100);
   /* Infinite loop */
   for(;;)
   {
@@ -180,35 +203,49 @@ void StartInferencingTask(void const * argument)
 {
   /* USER CODE BEGIN StartInferencingTask */
   /* Infinite loop */
-//	uint16_t buf_offset;
+	uint16_t buf_offset;
 	for(;;)
 	{
 //		xQueueReceive(xQueue1, &buf_offset, 100);
-//		osDelay(1);
+//		TODO do some inferencing here, put the rest into another task
         bool oppositehit = !HAL_GPIO_ReadPin(OPPOSITEHIT_BTN_GPIO_Port, OPPOSITEHIT_BTN_Pin);
         bool tablehit = !HAL_GPIO_ReadPin(TABLEHIT_BTN_GPIO_Port, TABLEHIT_BTN_Pin);
 
         if (oppositehit || tablehit)
         {
+            xTimerStop(timeoutTimerHandle, 0);
             //debounce
             osDelay(100);
             switch_pp_state(&lcd1);
+            if (state == R_WAIT || state == R_TURN || state == L_WAIT || state == L_TURN) {
+                xTimerStart(timeoutTimerHandle, PP_TIMEOUT_TICKS);
+                // I fucking love embedded
+                xTimerChangePeriod(timeoutTimerHandle, PP_TIMEOUT_TICKS, 0);
+            }
         }
-        osDelay(10);
+        osDelay(100);
 	}
   /* USER CODE END StartInferencingTask */
+}
+
+/* timeoutCallback function */
+void timeoutCallback(void const * argument)
+{
+  /* USER CODE BEGIN timeoutCallback */
+    check_timeout(&lcd1, state);
+  /* USER CODE END timeoutCallback */
 }
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
 
 void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc) {
-	xQueueSendFromISR(xQueue1, &buf_start_pointer, 100);
+//	xQueueSendFromISR(xQueue1, &buf_start_pointer, 100);
 	HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
 }
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
-	xQueueSendFromISR(xQueue1, &buf_half_pointer, 100);
+//	xQueueSendFromISR(xQueue1, &buf_half_pointer, 100);
 	HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
 }
 /* USER CODE END Application */
