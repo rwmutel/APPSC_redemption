@@ -26,6 +26,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "adc.h"
+#include "pingpong.h"
+#include "stdbool.h"
+#include "lcd5110.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,10 +48,19 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+volatile bool listening = true;
+LCD5110_display lcd1;
+
 uint16_t dma_buffer[100];
 const uint16_t buf_start_pointer = 0;
 const uint16_t buf_half_pointer = 500;
 QueueHandle_t xQueue1;
+
+volatile state_t state = START;
+volatile state_t server = START;
+volatile uint8_t l_score = 0;
+volatile uint8_t r_score = 0;
+volatile bool deuce = false;
 /* USER CODE END Variables */
 osThreadId samplingTaskHandle;
 osThreadId inferencingTaskHandle;
@@ -56,7 +68,6 @@ osMessageQId inferenceTaskQueueHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-
 /* USER CODE END FunctionPrototypes */
 
 void StartSamplingTask(void const * argument);
@@ -87,7 +98,17 @@ void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackTy
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
+    lcd1.hw_conf.spi_handle = &hspi2;
+    lcd1.hw_conf.spi_cs_pin = LCD_CS_Pin;
+    lcd1.hw_conf.spi_cs_port = LCD_CS_GPIO_Port;
+    lcd1.hw_conf.rst_pin = LCD_RST_Pin;
+    lcd1.hw_conf.rst_port = LCD_RST_GPIO_Port;
+    lcd1.hw_conf.dc_pin = LCD_DC_Pin;
+    lcd1.hw_conf.dc_port = LCD_DC_GPIO_Port;
+    lcd1.def_scr = lcd5110_def_scr;
+    LCD5110_init(&lcd1.hw_conf, LCD5110_NORMAL_MODE, 0x40, 2, 3);
 
+    print_score_text(&lcd1, "SELECT PLAYER (L/R)\n");
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -159,11 +180,21 @@ void StartInferencingTask(void const * argument)
 {
   /* USER CODE BEGIN StartInferencingTask */
   /* Infinite loop */
-	uint16_t buf_offset;
+//	uint16_t buf_offset;
 	for(;;)
 	{
-		xQueueReceive(xQueue1, &buf_offset, 100);
-		osDelay(1);
+//		xQueueReceive(xQueue1, &buf_offset, 100);
+//		osDelay(1);
+        bool oppositehit = !HAL_GPIO_ReadPin(OPPOSITEHIT_BTN_GPIO_Port, OPPOSITEHIT_BTN_Pin);
+        bool tablehit = !HAL_GPIO_ReadPin(TABLEHIT_BTN_GPIO_Port, TABLEHIT_BTN_Pin);
+
+        if (oppositehit || tablehit)
+        {
+            //debounce
+            osDelay(100);
+            switch_pp_state(&lcd1);
+        }
+        osDelay(10);
 	}
   /* USER CODE END StartInferencingTask */
 }
