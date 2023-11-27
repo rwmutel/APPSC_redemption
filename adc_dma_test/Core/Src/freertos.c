@@ -28,7 +28,6 @@
 #include "adc.h"
 #include "pingpong.h"
 #include "stdbool.h"
-#include "lcd5110.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -49,7 +48,6 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
 volatile bool listening = true;
-LCD5110_display lcd1;
 
 uint16_t dma_buffer[100];
 const uint16_t buf_start_pointer = 0;
@@ -116,17 +114,8 @@ void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer, Stack
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
-    lcd1.hw_conf.spi_handle = &hspi2;
-    lcd1.hw_conf.spi_cs_pin = LCD_CS_Pin;
-    lcd1.hw_conf.spi_cs_port = LCD_CS_GPIO_Port;
-    lcd1.hw_conf.rst_pin = LCD_RST_Pin;
-    lcd1.hw_conf.rst_port = LCD_RST_GPIO_Port;
-    lcd1.hw_conf.dc_pin = LCD_DC_Pin;
-    lcd1.hw_conf.dc_port = LCD_DC_GPIO_Port;
-    lcd1.def_scr = lcd5110_def_scr;
-    LCD5110_init(&lcd1.hw_conf, LCD5110_NORMAL_MODE, 0x40, 2, 3);
 
-    print_score_text(&lcd1, "SELECT PLAYER (L/R)\n");
+    print_score("Choose player:");
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -216,7 +205,7 @@ void StartInferencingTask(void const * argument)
             xTimerStop(timeoutTimerHandle, 0);
             //debounce
             osDelay(100);
-            switch_pp_state(&lcd1);
+            switch_pp_state();
             if (state == R_WAIT || state == R_TURN || state == L_WAIT || state == L_TURN) {
                 xTimerStart(timeoutTimerHandle, PP_TIMEOUT_TICKS);
                 // I fucking love embedded
@@ -232,7 +221,7 @@ void StartInferencingTask(void const * argument)
 void timeoutCallback(void const * argument)
 {
   /* USER CODE BEGIN timeoutCallback */
-    check_timeout(&lcd1, state);
+    check_timeout(state);
   /* USER CODE END timeoutCallback */
 }
 

@@ -1,7 +1,10 @@
 //
 // Created by vepbxer on 11/26/23.
 //
-#include "lcd5110.h"
+#include "stdbool.h"
+#include "usart.h"
+#include "stdio.h"
+#include "string.h"
 
 #ifndef ADC_DMA_TEST_PINGPONG_H
 #define ADC_DMA_TEST_PINGPONG_H
@@ -18,36 +21,22 @@ extern volatile uint8_t l_score;
 extern volatile uint8_t r_score;
 extern volatile bool deuce;
 
-void print_score(LCD5110_display *lcd_conf) {
-    LCD5110_clear_scr(lcd_conf);
-    LCD5110_set_cursor(1, 22, lcd_conf);
-    LCD5110_printf(lcd_conf, BLACK, "L:%u", l_score);
-    LCD5110_set_cursor(60, 22, lcd_conf);
-    LCD5110_printf(lcd_conf, BLACK, "R:%u", r_score);
-    if (deuce) {
-        LCD5110_set_cursor(1, 40, lcd_conf);
-        LCD5110_print("DEUCE", BLACK, lcd_conf);
-    }
-    LCD5110_refresh(lcd_conf);
-}
-void print_score_text(LCD5110_display *lcd_conf, const char *str) {
-    print_score(lcd_conf);
-    LCD5110_set_cursor(1, 40, lcd_conf);
-    LCD5110_print(str, BLACK, lcd_conf);
-    LCD5110_refresh(lcd_conf);
+void print_score(char* text) {
+    char buf[50];
+    sprintf(buf, "%d, %d, %s\r\n", l_score, r_score, text);
+    HAL_UART_Transmit(&huart1, (uint8_t *) buf, strlen(buf), 100);
 }
 
-void update_score(LCD5110_display* lcd_conf, state_t winner) {
+void update_score(state_t winner) {
     if (winner == L_SERVE) {
         l_score++;
         if (r_score == 10 && l_score == 10) {
             deuce = true;
         } else if ((l_score == 11 && !deuce)
                    || (l_score - r_score > 1 && deuce)) {
-            print_score_text(lcd_conf, "LEFT WON!");
             state = END;
+            print_score("L wins");
         } else {
-            print_score(lcd_conf);
             if (((l_score + r_score) % 2 == 0 && !deuce) || deuce) {
                 state = (server == R_SERVE) ? L_SERVE : R_SERVE;
             } else {
@@ -61,10 +50,9 @@ void update_score(LCD5110_display* lcd_conf, state_t winner) {
             deuce = true;
         } else if ((r_score == 11 && !deuce)
                    || (r_score - l_score > 1 && deuce)) {
-            print_score_text(lcd_conf, "RIGHT WON!");
             state = END;
+            print_score("R wins");
         } else {
-            print_score(lcd_conf);
             if (((l_score + r_score) % 2 == 0 && !deuce) || deuce) {
                 state = (server == R_SERVE) ? L_SERVE : R_SERVE;
             } else {
@@ -75,34 +63,33 @@ void update_score(LCD5110_display* lcd_conf, state_t winner) {
     }
 }
 
-void print_current_state(LCD5110_display* lcd_conf) {
-    LCD5110_set_cursor(0, 0, lcd_conf);
+void print_current_state() {
     switch (state) {
         case START:
-            LCD5110_print("START\n", BLACK, lcd_conf);
+            print_score("START");
             break;
         case L_SERVE:
-            LCD5110_print("L_SERVE\n", BLACK, lcd_conf);
+            print_score("L_SERVE");
             break;
         case R_SERVE:
-            LCD5110_print("R_SERVE\n", BLACK, lcd_conf);
+            print_score("R_SERVE");
             break;
         case L_WAIT:
-            LCD5110_print("L_WAIT\n", BLACK, lcd_conf);
+            print_score("L_WAIT");
             break;
         case R_WAIT:
-            LCD5110_print("R_WAIT\n", BLACK, lcd_conf);
+            print_score("R_WAIT");
             break;
         case L_TURN:
-            LCD5110_print("L_TURN\n", BLACK, lcd_conf);
+            print_score("L_TURN");
             break;
         case R_TURN:
-            LCD5110_print("R_TURN\n", BLACK, lcd_conf);
+            print_score("R_TURN");
             break;
     }
 }
 
-void switch_pp_state(LCD5110_display* lcd_conf) {
+void switch_pp_state() {
     // tablehit (left side)
     if (!HAL_GPIO_ReadPin(TABLEHIT_BTN_GPIO_Port, TABLEHIT_BTN_Pin)) {
         if (state == START) {
@@ -111,17 +98,16 @@ void switch_pp_state(LCD5110_display* lcd_conf) {
         } else if (state == L_SERVE) {
             state = L_WAIT;
         } else if (state == R_SERVE) {
-            update_score(lcd_conf, L_SERVE);
+            update_score(L_SERVE);
         } else if (state == L_WAIT) {
-            update_score(lcd_conf, R_SERVE);
+            update_score(R_SERVE);
         } else if (state == R_WAIT) {
             state = L_TURN;
         } else if (state == L_TURN) {
-            update_score(lcd_conf, R_SERVE);
+            update_score( R_SERVE);
         } else if (state == R_TURN) {
             state = L_TURN;
         };
-        print_current_state(lcd_conf);
     }
     // oppositehit (right side)
     else if (!HAL_GPIO_ReadPin(OPPOSITEHIT_BTN_GPIO_Port,
@@ -132,30 +118,30 @@ void switch_pp_state(LCD5110_display* lcd_conf) {
         } else if (state == R_SERVE) {
             state = R_WAIT;
         } else if (state == L_SERVE) {
-            update_score(lcd_conf, R_SERVE);
+            update_score( R_SERVE);
         } else if (state == R_WAIT) {
-            update_score(lcd_conf, L_SERVE);
+            update_score( L_SERVE);
         } else if (state == L_WAIT) {
             state = R_TURN;
         } else if (state == R_TURN) {
-            update_score(lcd_conf, L_SERVE);
+            update_score(L_SERVE);
         } else if (state == L_TURN) {
             state = R_TURN;
         }
-        print_current_state(lcd_conf);
     }
+    print_current_state();
 }
 
-void check_timeout(LCD5110_display* lcd_conf, state_t init_state) {
+void check_timeout(state_t init_state) {
     if (init_state == R_WAIT && init_state == state) {
-        update_score(lcd_conf, L_SERVE);
+        update_score( L_SERVE);
     } else if (init_state == L_WAIT && init_state == state) {
-        update_score(lcd_conf, R_SERVE);
+        update_score(R_SERVE);
     } else if (init_state == R_TURN && init_state == state) {
-        update_score(lcd_conf, L_SERVE);
+        update_score(L_SERVE);
     } else if (init_state == L_TURN && init_state == state) {
-        update_score(lcd_conf, R_SERVE);
+        update_score(R_SERVE);
     }
-    print_current_state(lcd_conf);
+    print_current_state();
 }
 #endif //ADC_DMA_TEST_PINGPONG_H
