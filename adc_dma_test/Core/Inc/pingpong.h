@@ -35,7 +35,7 @@ void update_score(state_t winner) {
         } else if ((l_score == 11 && !deuce)
                    || (l_score - r_score > 1 && deuce)) {
             state = END;
-            print_score("L wins");
+            print_score("Left player wins!");
         } else {
             if (((l_score + r_score) % 2 == 0 && !deuce) || deuce) {
                 state = (server == R_SERVE) ? L_SERVE : R_SERVE;
@@ -51,7 +51,7 @@ void update_score(state_t winner) {
         } else if ((r_score == 11 && !deuce)
                    || (r_score - l_score > 1 && deuce)) {
             state = END;
-            print_score("R wins");
+            print_score("Right player wins!");
         } else {
             if (((l_score + r_score) % 2 == 0 && !deuce) || deuce) {
                 state = (server == R_SERVE) ? L_SERVE : R_SERVE;
@@ -66,25 +66,25 @@ void update_score(state_t winner) {
 void print_current_state() {
     switch (state) {
         case START:
-            print_score("START");
+            print_score("Game started");
             break;
         case L_SERVE:
-            print_score("L_SERVE");
+            print_score("Left player serves");
             break;
         case R_SERVE:
-            print_score("R_SERVE");
+            print_score("Right player serves");
             break;
         case L_WAIT:
-            print_score("L_WAIT");
+            print_score("Waiting on right court");
             break;
         case R_WAIT:
-            print_score("R_WAIT");
+            print_score("Waiting on left court");
             break;
         case L_TURN:
-            print_score("L_TURN");
+            print_score("Left returns");
             break;
         case R_TURN:
-            print_score("R_TURN");
+            print_score("Right returns");
             break;
     }
 }
