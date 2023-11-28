@@ -28,6 +28,8 @@
 #include "adc.h"
 #include "pingpong.h"
 #include "stdbool.h"
+#include "classifier.h"
+#include "model-parameters/model_metadata.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -49,10 +51,10 @@
 /* USER CODE BEGIN Variables */
 volatile bool listening = true;
 
-uint16_t dma_buffer[100];
-const uint16_t buf_start_pointer = 0;
-const uint16_t buf_half_pointer = 500;
-QueueHandle_t xQueue1;
+uint16_t dma_buffer[EI_CLASSIFIER_SLICE_SIZE*2];
+const uint32_t buf_start_pointer = 0;
+const uint32_t buf_half_pointer = EI_CLASSIFIER_SLICE_SIZE;
+uint32_t buf_offset;
 
 volatile state_t state = START;
 volatile state_t server = START;
@@ -64,6 +66,7 @@ osThreadId samplingTaskHandle;
 osThreadId inferencingTaskHandle;
 osMessageQId inferenceTaskQueueHandle;
 osTimerId timeoutTimerHandle;
+osSemaphoreId dataAvailableHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -115,12 +118,18 @@ void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer, Stack
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
 
-    print_score("Choose player:");
+  print_score("Choose player:");
+  classifier_init();
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
+
+  /* Create the semaphores(s) */
+  /* definition and creation of dataAvailable */
+  osSemaphoreDef(dataAvailable);
+  dataAvailableHandle = osSemaphoreCreate(osSemaphore(dataAvailable), 1);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
@@ -142,7 +151,6 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
-	xQueue1 = xQueueCreate(10,sizeof(char*));
 
   /* USER CODE END RTOS_QUEUES */
 
@@ -152,7 +160,7 @@ void MX_FREERTOS_Init(void) {
   samplingTaskHandle = osThreadCreate(osThread(samplingTask), NULL);
 
   /* definition and creation of inferencingTask */
-  osThreadDef(inferencingTask, StartInferencingTask, osPriorityIdle, 0, 128);
+  osThreadDef(inferencingTask, StartInferencingTask, osPriorityNormal, 0, 128);
   inferencingTaskHandle = osThreadCreate(osThread(inferencingTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -171,11 +179,10 @@ void MX_FREERTOS_Init(void) {
 void StartSamplingTask(void const * argument)
 {
   /* USER CODE BEGIN StartSamplingTask */
-//  HAL_ADC_Start_DMA(&hadc1, dma_buffer, 100);
+  HAL_ADC_Start_DMA(&hadc1, dma_buffer, 1000);
   /* Infinite loop */
   for(;;)
   {
-	HAL_GPIO_TogglePin(BLUE_LED_GPIO_Port, BLUE_LED_Pin);
     osDelay(1000);
   }
   /* USER CODE END StartSamplingTask */
@@ -192,27 +199,32 @@ void StartInferencingTask(void const * argument)
 {
   /* USER CODE BEGIN StartInferencingTask */
   /* Infinite loop */
-	uint16_t buf_offset;
 	for(;;)
 	{
-//		xQueueReceive(xQueue1, &buf_offset, 100);
-//		TODO do some inferencing here, put the rest into another task
-        bool oppositehit = !HAL_GPIO_ReadPin(OPPOSITEHIT_BTN_GPIO_Port, OPPOSITEHIT_BTN_Pin);
-        bool tablehit = !HAL_GPIO_ReadPin(TABLEHIT_BTN_GPIO_Port, TABLEHIT_BTN_Pin);
+        if (xSemaphoreTake(dataAvailableHandle, portMAX_DELAY) == pdTRUE) {
+            HAL_GPIO_TogglePin(BLUE_LED_GPIO_Port, BLUE_LED_Pin);
 
-        if (oppositehit || tablehit)
-        {
-            xTimerStop(timeoutTimerHandle, 0);
-            //debounce
-            osDelay(100);
-            switch_pp_state();
-            if (state == R_WAIT || state == R_TURN || state == L_WAIT || state == L_TURN) {
-                xTimerStart(timeoutTimerHandle, PP_TIMEOUT_TICKS);
-                // I fucking love embedded
-                xTimerChangePeriod(timeoutTimerHandle, PP_TIMEOUT_TICKS, 0);
+            bool oppositehit = false;
+            bool tablehit = false;
+
+            uint32_t res = classify_slice(buf_offset);
+
+            if (res == 0) {
+                tablehit = true;
+            } else if (res == 1) {
+                oppositehit = true;
+            }
+
+            if (oppositehit || tablehit) {
+                xTimerStop(timeoutTimerHandle, 0);
+                switch_pp_state();
+                if (state == R_WAIT || state == R_TURN || state == L_WAIT || state == L_TURN) {
+                    xTimerStart(timeoutTimerHandle, PP_TIMEOUT_TICKS);
+                    // I fucking love embedded
+                    xTimerChangePeriod(timeoutTimerHandle, PP_TIMEOUT_TICKS, 0);
+                }
             }
         }
-        osDelay(100);
 	}
   /* USER CODE END StartInferencingTask */
 }
@@ -229,13 +241,20 @@ void timeoutCallback(void const * argument)
 /* USER CODE BEGIN Application */
 
 void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc) {
-//	xQueueSendFromISR(xQueue1, &buf_start_pointer, 100);
-	HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
+    HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
+    BaseType_t wokenUp = pdFALSE;
+    buf_offset = buf_start_pointer;
+    xSemaphoreGiveFromISR(dataAvailableHandle, &wokenUp);
+    portYIELD_FROM_ISR(wokenUp);
+
 }
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
-//	xQueueSendFromISR(xQueue1, &buf_half_pointer, 100);
-	HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
+    HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
+    BaseType_t wokenUp = pdFALSE;
+    buf_offset = buf_half_pointer;
+    xSemaphoreGiveFromISR(dataAvailableHandle, &wokenUp);
+    portYIELD_FROM_ISR(wokenUp);
 }
 /* USER CODE END Application */
 
