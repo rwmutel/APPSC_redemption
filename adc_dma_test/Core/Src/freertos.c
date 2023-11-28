@@ -217,7 +217,7 @@ void StartInferencingTask(void const * argument)
 
             if (oppositehit || tablehit) {
                 xTimerStop(timeoutTimerHandle, 0);
-                switch_pp_state();
+                switch_pp_state(tablehit, oppositehit);
                 if (state == R_WAIT || state == R_TURN || state == L_WAIT || state == L_TURN) {
                     xTimerStart(timeoutTimerHandle, PP_TIMEOUT_TICKS);
                     // I fucking love embedded

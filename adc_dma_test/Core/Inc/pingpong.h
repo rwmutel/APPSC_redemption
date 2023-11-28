@@ -89,9 +89,9 @@ void print_current_state() {
     }
 }
 
-void switch_pp_state() {
+void switch_pp_state(bool tablehit, bool oppositehit) {
     // tablehit (left side)
-    if (!HAL_GPIO_ReadPin(TABLEHIT_BTN_GPIO_Port, TABLEHIT_BTN_Pin)) {
+    if (tablehit) {
         if (state == START) {
             state = L_SERVE;
             server = L_SERVE;
@@ -110,8 +110,7 @@ void switch_pp_state() {
         };
     }
     // oppositehit (right side)
-    else if (!HAL_GPIO_ReadPin(OPPOSITEHIT_BTN_GPIO_Port,
-                               OPPOSITEHIT_BTN_Pin)) {
+    else if (oppositehit) {
         if (state == START) {
             state = R_SERVE;
             server = state;
