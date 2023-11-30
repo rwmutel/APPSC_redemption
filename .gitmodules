@@ -1,0 +1,3 @@
+[submodule "appsc-front"]
+	path = appsc-front
+	url = git@github.com:ch1pkav/appsc-front.git
