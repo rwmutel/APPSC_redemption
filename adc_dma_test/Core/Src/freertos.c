@@ -30,6 +30,7 @@
 #include "stdbool.h"
 #include "classifier.h"
 #include "model-parameters/model_metadata.h"
+#include "task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -120,6 +121,7 @@ void MX_FREERTOS_Init(void) {
 
   print_score("Choose player:");
   classifier_init();
+  HAL_ADC_Start_DMA(&hadc1, dma_buffer, 1000);
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -156,11 +158,11 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the thread(s) */
   /* definition and creation of samplingTask */
-  osThreadDef(samplingTask, StartSamplingTask, osPriorityHigh, 0, 128);
+  osThreadDef(samplingTask, StartSamplingTask, osPriorityLow, 0, 128);
   samplingTaskHandle = osThreadCreate(osThread(samplingTask), NULL);
 
   /* definition and creation of inferencingTask */
-  osThreadDef(inferencingTask, StartInferencingTask, osPriorityNormal, 0, 128);
+  osThreadDef(inferencingTask, StartInferencingTask, osPriorityHigh, 0, 256);
   inferencingTaskHandle = osThreadCreate(osThread(inferencingTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -179,11 +181,10 @@ void MX_FREERTOS_Init(void) {
 void StartSamplingTask(void const * argument)
 {
   /* USER CODE BEGIN StartSamplingTask */
-  HAL_ADC_Start_DMA(&hadc1, dma_buffer, 1000);
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1000);
+      osDelay(1000);
   }
   /* USER CODE END StartSamplingTask */
 }
@@ -199,10 +200,8 @@ void StartInferencingTask(void const * argument)
 {
   /* USER CODE BEGIN StartInferencingTask */
   /* Infinite loop */
-	for(;;)
-	{
+	for(;;) {
         if (xSemaphoreTake(dataAvailableHandle, portMAX_DELAY) == pdTRUE) {
-            HAL_GPIO_TogglePin(BLUE_LED_GPIO_Port, BLUE_LED_Pin);
 
             bool oppositehit = false;
             bool tablehit = false;
@@ -245,7 +244,7 @@ void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc) {
     BaseType_t wokenUp = pdFALSE;
     buf_offset = buf_start_pointer;
     xSemaphoreGiveFromISR(dataAvailableHandle, &wokenUp);
-    portYIELD_FROM_ISR(wokenUp);
+    portEND_SWITCHING_ISR(wokenUp);
 
 }
 
@@ -254,7 +253,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
     BaseType_t wokenUp = pdFALSE;
     buf_offset = buf_half_pointer;
     xSemaphoreGiveFromISR(dataAvailableHandle, &wokenUp);
-    portYIELD_FROM_ISR(wokenUp);
+    portEND_SWITCHING_ISR(wokenUp);
 }
 /* USER CODE END Application */
 
