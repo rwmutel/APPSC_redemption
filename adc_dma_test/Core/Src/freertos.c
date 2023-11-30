@@ -28,7 +28,9 @@
 #include "adc.h"
 #include "pingpong.h"
 #include "stdbool.h"
-#include "lcd5110.h"
+#include "classifier.h"
+#include "model-parameters/model_metadata.h"
+#include "task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -49,12 +51,11 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
 volatile bool listening = true;
-LCD5110_display lcd1;
 
-uint16_t dma_buffer[100];
-const uint16_t buf_start_pointer = 0;
-const uint16_t buf_half_pointer = 500;
-QueueHandle_t xQueue1;
+uint16_t dma_buffer[EI_CLASSIFIER_SLICE_SIZE*2];
+const uint32_t buf_start_pointer = 0;
+const uint32_t buf_half_pointer = EI_CLASSIFIER_SLICE_SIZE;
+uint32_t buf_offset;
 
 volatile state_t state = START;
 volatile state_t server = START;
@@ -66,6 +67,7 @@ osThreadId samplingTaskHandle;
 osThreadId inferencingTaskHandle;
 osMessageQId inferenceTaskQueueHandle;
 osTimerId timeoutTimerHandle;
+osSemaphoreId dataAvailableHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -116,22 +118,20 @@ void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer, Stack
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
-    lcd1.hw_conf.spi_handle = &hspi2;
-    lcd1.hw_conf.spi_cs_pin = LCD_CS_Pin;
-    lcd1.hw_conf.spi_cs_port = LCD_CS_GPIO_Port;
-    lcd1.hw_conf.rst_pin = LCD_RST_Pin;
-    lcd1.hw_conf.rst_port = LCD_RST_GPIO_Port;
-    lcd1.hw_conf.dc_pin = LCD_DC_Pin;
-    lcd1.hw_conf.dc_port = LCD_DC_GPIO_Port;
-    lcd1.def_scr = lcd5110_def_scr;
-    LCD5110_init(&lcd1.hw_conf, LCD5110_NORMAL_MODE, 0x40, 2, 3);
 
-    print_score_text(&lcd1, "SELECT PLAYER (L/R)\n");
+  print_score("Choose player:");
+  classifier_init();
+  HAL_ADC_Start_DMA(&hadc1, dma_buffer, 1000);
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
+
+  /* Create the semaphores(s) */
+  /* definition and creation of dataAvailable */
+  osSemaphoreDef(dataAvailable);
+  dataAvailableHandle = osSemaphoreCreate(osSemaphore(dataAvailable), 1);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
@@ -153,17 +153,16 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
-	xQueue1 = xQueueCreate(10,sizeof(char*));
 
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
   /* definition and creation of samplingTask */
-  osThreadDef(samplingTask, StartSamplingTask, osPriorityHigh, 0, 128);
+  osThreadDef(samplingTask, StartSamplingTask, osPriorityLow, 0, 128);
   samplingTaskHandle = osThreadCreate(osThread(samplingTask), NULL);
 
   /* definition and creation of inferencingTask */
-  osThreadDef(inferencingTask, StartInferencingTask, osPriorityIdle, 0, 128);
+  osThreadDef(inferencingTask, StartInferencingTask, osPriorityHigh, 0, 256);
   inferencingTaskHandle = osThreadCreate(osThread(inferencingTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -182,12 +181,10 @@ void MX_FREERTOS_Init(void) {
 void StartSamplingTask(void const * argument)
 {
   /* USER CODE BEGIN StartSamplingTask */
-//  HAL_ADC_Start_DMA(&hadc1, dma_buffer, 100);
   /* Infinite loop */
   for(;;)
   {
-	HAL_GPIO_TogglePin(BLUE_LED_GPIO_Port, BLUE_LED_Pin);
-    osDelay(1000);
+      osDelay(1000);
   }
   /* USER CODE END StartSamplingTask */
 }
@@ -203,27 +200,30 @@ void StartInferencingTask(void const * argument)
 {
   /* USER CODE BEGIN StartInferencingTask */
   /* Infinite loop */
-	uint16_t buf_offset;
-	for(;;)
-	{
-//		xQueueReceive(xQueue1, &buf_offset, 100);
-//		TODO do some inferencing here, put the rest into another task
-        bool oppositehit = !HAL_GPIO_ReadPin(OPPOSITEHIT_BTN_GPIO_Port, OPPOSITEHIT_BTN_Pin);
-        bool tablehit = !HAL_GPIO_ReadPin(TABLEHIT_BTN_GPIO_Port, TABLEHIT_BTN_Pin);
+	for(;;) {
+        if (xSemaphoreTake(dataAvailableHandle, portMAX_DELAY) == pdTRUE) {
 
-        if (oppositehit || tablehit)
-        {
-            xTimerStop(timeoutTimerHandle, 0);
-            //debounce
-            osDelay(100);
-            switch_pp_state(&lcd1);
-            if (state == R_WAIT || state == R_TURN || state == L_WAIT || state == L_TURN) {
-                xTimerStart(timeoutTimerHandle, PP_TIMEOUT_TICKS);
-                // I fucking love embedded
-                xTimerChangePeriod(timeoutTimerHandle, PP_TIMEOUT_TICKS, 0);
+            bool oppositehit = false;
+            bool tablehit = false;
+
+            uint32_t res = classify_slice(buf_offset);
+
+            if (res == 0) {
+                tablehit = true;
+            } else if (res == 1) {
+                oppositehit = true;
+            }
+
+            if (oppositehit || tablehit) {
+                xTimerStop(timeoutTimerHandle, 0);
+                switch_pp_state(tablehit, oppositehit);
+                if (state == R_WAIT || state == R_TURN || state == L_WAIT || state == L_TURN) {
+                    xTimerStart(timeoutTimerHandle, PP_TIMEOUT_TICKS);
+                    // I fucking love embedded
+                    xTimerChangePeriod(timeoutTimerHandle, PP_TIMEOUT_TICKS, 0);
+                }
             }
         }
-        osDelay(100);
 	}
   /* USER CODE END StartInferencingTask */
 }
@@ -232,7 +232,7 @@ void StartInferencingTask(void const * argument)
 void timeoutCallback(void const * argument)
 {
   /* USER CODE BEGIN timeoutCallback */
-    check_timeout(&lcd1, state);
+    check_timeout(state);
   /* USER CODE END timeoutCallback */
 }
 
@@ -240,13 +240,20 @@ void timeoutCallback(void const * argument)
 /* USER CODE BEGIN Application */
 
 void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc) {
-//	xQueueSendFromISR(xQueue1, &buf_start_pointer, 100);
-	HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
+    HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
+    BaseType_t wokenUp = pdFALSE;
+    buf_offset = buf_start_pointer;
+    xSemaphoreGiveFromISR(dataAvailableHandle, &wokenUp);
+    portEND_SWITCHING_ISR(wokenUp);
+
 }
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
-//	xQueueSendFromISR(xQueue1, &buf_half_pointer, 100);
-	HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
+    HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
+    BaseType_t wokenUp = pdFALSE;
+    buf_offset = buf_half_pointer;
+    xSemaphoreGiveFromISR(dataAvailableHandle, &wokenUp);
+    portEND_SWITCHING_ISR(wokenUp);
 }
 /* USER CODE END Application */
 
