@@ -206,8 +206,8 @@ void StartInferencingTask(void const * argument)
             bool oppositehit = false;
             bool tablehit = false;
 
-//            uint32_t res = classify_slice(buf_offset);
-            uint32_t res = 0;
+            uint32_t res = classify_slice(buf_offset);
+//            uint32_t res = 0;
 
             if (res == 0) {
                 tablehit = true;
