@@ -52,9 +52,9 @@
 /* USER CODE BEGIN Variables */
 volatile bool listening = true;
 
-uint16_t dma_buffer[EI_CLASSIFIER_SLICE_SIZE*2];
+uint16_t dma_buffer[EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE*2];
 const uint32_t buf_start_pointer = 0;
-const uint32_t buf_half_pointer = EI_CLASSIFIER_SLICE_SIZE;
+const uint32_t buf_half_pointer = EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE;
 uint32_t buf_offset;
 
 volatile state_t state = START;
@@ -206,7 +206,8 @@ void StartInferencingTask(void const * argument)
             bool oppositehit = false;
             bool tablehit = false;
 
-            uint32_t res = classify_slice(buf_offset);
+//            uint32_t res = classify_slice(buf_offset);
+            uint32_t res = 0;
 
             if (res == 0) {
                 tablehit = true;
@@ -249,7 +250,7 @@ void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc) {
 }
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
-    HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
+    HAL_GPIO_TogglePin(SOME_LED_GPIO_Port, SOME_LED_Pin);
     BaseType_t wokenUp = pdFALSE;
     buf_offset = buf_half_pointer;
     xSemaphoreGiveFromISR(dataAvailableHandle, &wokenUp);

@@ -29,7 +29,7 @@
 #include "edge-impulse-sdk/classifier/ei_model_types.h"
 #include "edge-impulse-sdk/classifier/inferencing_engines/engines.h"
 
-const char* ei_classifier_inferencing_categories[] = { "demo_l", "demo_r", "demo_silence" };
+const char* ei_classifier_inferencing_categories[] = { "l-hit", "r-hit", "silence_crop" };
 
 uint8_t ei_dsp_config_63_axes[] = { 0 };
 const uint32_t ei_dsp_config_63_axes_size = 1;
@@ -39,8 +39,8 @@ ei_dsp_config_mfe_t ei_dsp_config_63 = {
     1, // int length of axes
     0.02f, // float frame_length
     0.01f, // float frame_stride
-    40, // int num_filters
-    256, // int fft_length
+    20, // int num_filters
+    128, // int fft_length
     0, // int low_frequency
     0, // int high_frequency
     101, // int win_size
@@ -56,8 +56,8 @@ ei_dsp_config_mfe_t ei_dsp_config_67 = {
     1, // int length of axes
     0.02f, // float frame_length
     0.01f, // float frame_stride
-    40, // int num_filters
-    256, // int fft_length
+    20, // int num_filters
+    128, // int fft_length
     0, // int low_frequency
     0, // int high_frequency
     101, // int win_size
@@ -67,14 +67,16 @@ ei_dsp_config_mfe_t ei_dsp_config_67 = {
 const size_t ei_dsp_blocks_size = 2;
 ei_model_dsp_t ei_dsp_blocks[ei_dsp_blocks_size] = {
     { // DSP block 63
-        720,
+        63,
+        200,
         &extract_mfe_features,
         (void*)&ei_dsp_config_63,
         ei_dsp_config_63_axes,
         ei_dsp_config_63_axes_size
     },
     { // DSP block 67
-        720,
+        67,
+        200,
         &extract_mfe_features,
         (void*)&ei_dsp_config_67,
         ei_dsp_config_67_axes,
@@ -104,11 +106,18 @@ const ei_learning_block_config_tflite_graph_t ei_learning_block_config_7 = {
 };
 
 const size_t ei_learning_blocks_size = 1;
+const uint32_t ei_learning_block_7_inputs[2] = { 63,67 };
+const uint32_t ei_learning_block_7_inputs_size = 2;
 const ei_learning_block_t ei_learning_blocks[ei_learning_blocks_size] = {
     {
+        7,
+        false,
         &run_nn_inference,
         (void*)&ei_learning_block_config_7,
         EI_CLASSIFIER_IMAGE_SCALING_NONE,
+        ei_learning_block_7_inputs,
+        ei_learning_block_7_inputs_size,
+        3
     },
 };
 
@@ -121,27 +130,29 @@ const ei_model_performance_calibration_t ei_calibration = {
     0   /* Don't use flags */
 };
 
-const ei_impulse_t impulse_314693_10 = {
+const ei_impulse_t impulse_314693_16 = {
     .project_id = 314693,
     .project_owner = "Roman",
     .project_name = "OS-APPSC",
-    .deploy_version = 10,
+    .deploy_version = 16,
 
-    .nn_input_frame_size = 1440,
-    .raw_sample_count = 5000,
+    .nn_input_frame_size = 400,
+    .raw_sample_count = 548,
     .raw_samples_per_frame = 2,
-    .dsp_input_frame_size = 5000 * 2,
+    .dsp_input_frame_size = 548 * 2,
     .input_width = 0,
     .input_height = 0,
     .input_frames = 0,
-    .interval_ms = 0.04,
-    .frequency = 25000,
+    .interval_ms = 0.21867483052700634,
+    .frequency = 4573,
     .dsp_blocks_size = ei_dsp_blocks_size,
     .dsp_blocks = ei_dsp_blocks,
     
     .object_detection = 0,
     .object_detection_count = 0,
+     
     .object_detection_threshold = 0,
+     
     .object_detection_last_layer = EI_CLASSIFIER_LAST_LAYER_UNKNOWN,
     .fomo_output_size = 0,
     
@@ -153,15 +164,15 @@ const ei_impulse_t impulse_314693_10 = {
 
     .sensor = EI_CLASSIFIER_SENSOR_FUSION,
     .fusion_string = "left_mic + right_mic",
-    .slice_size = (5000/4),
+    .slice_size = (548/4),
     .slices_per_model_window = 4,
 
-    .has_anomaly = 0,
+    .has_anomaly = EI_ANOMALY_TYPE_UNKNOWN,
     .label_count = 3,
     .calibration = ei_calibration,
     .categories = ei_classifier_inferencing_categories
 };
 
-const ei_impulse_t ei_default_impulse = impulse_314693_10;
+const ei_impulse_t& ei_default_impulse = impulse_314693_16;
 
 #endif // _EI_CLASSIFIER_MODEL_METADATA_H_
