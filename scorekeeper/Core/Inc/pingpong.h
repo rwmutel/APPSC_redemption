@@ -21,8 +21,9 @@ extern volatile uint8_t l_score;
 extern volatile uint8_t r_score;
 extern volatile bool deuce;
 
-void print_score(char* text) {
-    char buf[50];
+
+void print_score(const char* text) {
+    char buf[256];
     sprintf(buf, "%d, %d, %s\r\n", l_score, r_score, text);
     HAL_UART_Transmit(&huart1, (uint8_t *) buf, strlen(buf), 100);
 }

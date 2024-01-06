@@ -10,6 +10,7 @@ uint32_t buf_start_offset = 0;
 signal_t audio_data;
 ei_impulse_result_t result;
 
+
 int audio_signal_get_data(size_t offset, size_t length, float *out_ptr)
 {
     numpy::int16_to_float((int16_t*) dma_buffer + buf_start_offset + offset, out_ptr, length);
@@ -22,10 +23,10 @@ void classifier_init(){
 
 uint32_t classify_slice(uint32_t offset){
     buf_start_offset = offset;
-    audio_data.total_length = EI_CLASSIFIER_SLICE_SIZE;
+    audio_data.total_length = EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE;
     audio_data.get_data = &audio_signal_get_data;
     result = { nullptr };
-    auto err = run_classifier_continuous(&audio_data, &result, false);
+    auto err = run_classifier_continuous(&audio_data, &result, true);
     HAL_GPIO_TogglePin(BLUE_LED_GPIO_Port, BLUE_LED_Pin);
 
     if (err != EI_IMPULSE_OK) {
@@ -37,6 +38,9 @@ uint32_t classify_slice(uint32_t offset){
         if (result.classification[ix].value > result.classification[max_index].value) {
             max_index = ix;
         }
+    }
+    if (result.classification[max_index].value < 0.85) {
+        return 2;
     }
 
     return max_index;

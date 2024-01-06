@@ -224,6 +224,7 @@ void StartInferencingTask(void const * argument)
                     xTimerChangePeriod(timeoutTimerHandle, PP_TIMEOUT_TICKS, 0);
                 }
             }
+            print_score("Buffer");
         }
 	}
   /* USER CODE END StartInferencingTask */
@@ -256,5 +257,6 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
     xSemaphoreGiveFromISR(dataAvailableHandle, &wokenUp);
     portEND_SWITCHING_ISR(wokenUp);
 }
+
 /* USER CODE END Application */
 
