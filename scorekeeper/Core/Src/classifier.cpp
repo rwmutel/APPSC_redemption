@@ -35,6 +35,13 @@ uint32_t classify_slice(volatile uint32_t offset){
         return 2;
     }
 
+//    char buf[256];
+//    sprintf(buf, "%s: %f, %s: %f, %s: %f\n", result.classification[0].label, result.classification[0].value, result.classification[1].label, result.classification[1].value, result.classification[2].label, result.classification[2].value);
+//    HAL_UART_Transmit(&huart1, (uint8_t*) buf, strlen(buf), 1000);
+//    for (size_t i = 0; i < 10; ++i) {
+//        sprintf(buf, "%d, %d, %d, %d, %d, %d, %d, %d\n", dma_buffer[buf_start_offset+i], dma_buffer[buf_start_offset+i+1], dma_buffer[buf_start_offset+i+2], dma_buffer[buf_start_offset+i+3], dma_buffer[buf_start_offset+i+4], dma_buffer[buf_start_offset+i+5], dma_buffer[buf_start_offset+i+6], dma_buffer[buf_start_offset+i+7]);
+//        HAL_UART_Transmit(&huart1, (uint8_t*) buf, strlen(buf), 1000);
+//    }
 
     uint32_t max_index = 2;
     for (size_t ix = 0; ix < EI_CLASSIFIER_LABEL_COUNT; ix++) {
@@ -42,21 +49,9 @@ uint32_t classify_slice(volatile uint32_t offset){
             max_index = ix;
         }
     }
-    if (result.classification[max_index].value < 0.85) {
-//        for (size_t ix = 0; ix < 10; ix++) {
-//            sprintf(buf, "%d %d %d %d %d %d %d %d %d %d\n",
-//            dma_buffer[ix], dma_buffer[ix+1],
-//            dma_buffer[ix+2], dma_buffer[ix+3],
-//            dma_buffer[ix+4], dma_buffer[ix+5],
-//            dma_buffer[ix+6], dma_buffer[ix+7],
-//            dma_buffer[ix+8], dma_buffer[ix+9]);
-//            HAL_UART_Transmit(&huart1, (uint8_t*) buf, strlen(buf), 1000);
-//        }
+    if (result.classification[max_index].value < 0.75) {
         return 2;
     }
-//        char buf[256];
-//        sprintf(buf, "%f, %f, %f\n", result.classification[0].value, result.classification[1].value, result.classification[2].value);
-//        HAL_UART_Transmit(&huart1, (uint8_t*) buf, strlen(buf), 1000);
 
     return max_index;
 }

@@ -187,7 +187,7 @@ void MX_FREERTOS_Init(void) {
   samplingTaskHandle = osThreadCreate(osThread(samplingTask), NULL);
 
   /* definition and creation of inferencingTask */
-  osThreadDef(inferencingTask, StartInferencingTask, osPriorityHigh, 0, 1024);
+  osThreadDef(inferencingTask, StartInferencingTask, osPriorityHigh, 0, 2048);
   inferencingTaskHandle = osThreadCreate(osThread(inferencingTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */

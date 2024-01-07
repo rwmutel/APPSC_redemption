@@ -130,11 +130,11 @@ const ei_model_performance_calibration_t ei_calibration = {
     0   /* Don't use flags */
 };
 
-const ei_impulse_t impulse_314693_16 = {
+const ei_impulse_t impulse_314693_17 = {
     .project_id = 314693,
     .project_owner = "Roman",
     .project_name = "OS-APPSC",
-    .deploy_version = 16,
+    .deploy_version = 17,
 
     .nn_input_frame_size = 400,
     .raw_sample_count = 548,
@@ -173,6 +173,6 @@ const ei_impulse_t impulse_314693_16 = {
     .categories = ei_classifier_inferencing_categories
 };
 
-const ei_impulse_t& ei_default_impulse = impulse_314693_16;
+const ei_impulse_t& ei_default_impulse = impulse_314693_17;
 
 #endif // _EI_CLASSIFIER_MODEL_METADATA_H_
