@@ -19,7 +19,6 @@
 #if EI_PORTING_STM32_CUBEAI == 1
 
 #include "main.h"
-#include "pingpong.h"
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -46,10 +45,7 @@ uint64_t ei_read_timer_us() {
 __attribute__((weak)) void ei_printf(const char *format, ...) {
     va_list myargs;
     va_start(myargs, format);
-    char buffer[128];
-    vsprintf(buffer, format, myargs);
-    print_score(buffer);
-
+    vprintf(format, myargs);
     va_end(myargs);
 }
 

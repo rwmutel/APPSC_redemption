@@ -162,7 +162,6 @@ void MX_FREERTOS_Init(void) {
   /* definition and creation of dataAvailable */
   osSemaphoreDef(dataAvailable);
   dataAvailableHandle = osSemaphoreCreate(osSemaphore(dataAvailable), 1);
-  xSemaphoreTake(dataAvailableHandle, 0);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
