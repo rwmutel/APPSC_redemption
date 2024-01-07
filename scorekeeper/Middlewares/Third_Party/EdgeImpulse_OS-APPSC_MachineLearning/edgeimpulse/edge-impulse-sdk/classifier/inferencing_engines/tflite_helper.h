@@ -47,7 +47,7 @@ EI_IMPULSE_ERROR fill_input_tensor_from_matrix(
     size_t matrix_els = 0;
     uint32_t input_idx = 0;
 
-    for (size_t i = 0; i < input_block_ids_size; i++) {
+    for (size_t i = 1; i < input_block_ids_size; i++) {
 #if EI_CLASSIFIER_SINGLE_FEATURE_INPUT == 0
         size_t cur_mtx = input_block_ids[i];
         ei::matrix_t* matrix = NULL;

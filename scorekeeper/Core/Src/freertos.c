@@ -52,10 +52,10 @@
 /* USER CODE BEGIN Variables */
 volatile bool listening = true;
 
-uint16_t dma_buffer[EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE*2];
+int16_t dma_buffer[EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE*2];
 const uint32_t buf_start_pointer = 0;
 const uint32_t buf_half_pointer = EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE;
-uint32_t buf_offset;
+volatile uint32_t buf_offset;
 
 volatile state_t state = START;
 volatile state_t server = START;
@@ -65,7 +65,6 @@ volatile bool deuce = false;
 /* USER CODE END Variables */
 osThreadId samplingTaskHandle;
 osThreadId inferencingTaskHandle;
-osMessageQId inferenceTaskQueueHandle;
 osTimerId timeoutTimerHandle;
 osSemaphoreId dataAvailableHandle;
 
@@ -84,6 +83,37 @@ void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackTy
 
 /* GetTimerTaskMemory prototype (linked to static allocation support) */
 void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTaskStackBuffer, uint32_t *pulTimerTaskStackSize );
+
+/* Hook prototypes */
+void vApplicationStackOverflowHook(xTaskHandle xTask, signed char *pcTaskName);
+void vApplicationMallocFailedHook(void);
+
+/* USER CODE BEGIN 4 */
+__weak void vApplicationStackOverflowHook(xTaskHandle xTask, signed char *pcTaskName)
+{
+   /* Run time stack overflow checking is performed if
+   configCHECK_FOR_STACK_OVERFLOW is defined to 1 or 2. This hook function is
+   called if a stack overflow is detected. */
+    print_score("Stack overflow");
+}
+/* USER CODE END 4 */
+
+/* USER CODE BEGIN 5 */
+__weak void vApplicationMallocFailedHook(void)
+{
+   /* vApplicationMallocFailedHook() will only be called if
+   configUSE_MALLOC_FAILED_HOOK is set to 1 in FreeRTOSConfig.h. It is a hook
+   function that will get called if a call to pvPortMalloc() fails.
+   pvPortMalloc() is called internally by the kernel whenever a task, queue,
+   timer or semaphore is created. It is also called by various parts of the
+   demo application. If heap_1.c or heap_2.c are used, then the size of the
+   heap available to pvPortMalloc() is defined by configTOTAL_HEAP_SIZE in
+   FreeRTOSConfig.h, and the xPortGetFreeHeapSize() API function can be used
+   to query the size of free heap space that remains (although it does not
+   provide information on how the remaining heap might be fragmented). */
+    print_score("Malloc failed");
+}
+/* USER CODE END 5 */
 
 /* USER CODE BEGIN GET_IDLE_TASK_MEMORY */
 static StaticTask_t xIdleTaskTCBBuffer;
@@ -121,7 +151,7 @@ void MX_FREERTOS_Init(void) {
 
   print_score("Choose player:");
   classifier_init();
-  HAL_ADC_Start_DMA(&hadc1, dma_buffer, 1000);
+  HAL_ADC_Start_DMA(&hadc1, (uint32_t*) dma_buffer, EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE*2);
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -132,6 +162,7 @@ void MX_FREERTOS_Init(void) {
   /* definition and creation of dataAvailable */
   osSemaphoreDef(dataAvailable);
   dataAvailableHandle = osSemaphoreCreate(osSemaphore(dataAvailable), 1);
+  xSemaphoreTake(dataAvailableHandle, 0);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
@@ -146,11 +177,6 @@ void MX_FREERTOS_Init(void) {
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
 
-  /* Create the queue(s) */
-  /* definition and creation of inferenceTaskQueue */
-  osMessageQDef(inferenceTaskQueue, 16, uint32_t);
-  inferenceTaskQueueHandle = osMessageCreate(osMessageQ(inferenceTaskQueue), NULL);
-
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
 
@@ -162,7 +188,7 @@ void MX_FREERTOS_Init(void) {
   samplingTaskHandle = osThreadCreate(osThread(samplingTask), NULL);
 
   /* definition and creation of inferencingTask */
-  osThreadDef(inferencingTask, StartInferencingTask, osPriorityHigh, 0, 256);
+  osThreadDef(inferencingTask, StartInferencingTask, osPriorityHigh, 0, 1024);
   inferencingTaskHandle = osThreadCreate(osThread(inferencingTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -207,7 +233,6 @@ void StartInferencingTask(void const * argument)
             bool tablehit = false;
 
             uint32_t res = classify_slice(buf_offset);
-//            uint32_t res = 0;
 
             if (res == 0) {
                 tablehit = true;
@@ -224,7 +249,6 @@ void StartInferencingTask(void const * argument)
                     xTimerChangePeriod(timeoutTimerHandle, PP_TIMEOUT_TICKS, 0);
                 }
             }
-            print_score("Buffer");
         }
 	}
   /* USER CODE END StartInferencingTask */

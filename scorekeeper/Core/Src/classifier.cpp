@@ -5,15 +5,16 @@ extern "C" {
 #include "edge-impulse-sdk/dsp/numpy.hpp"
 #include "edge-impulse-sdk/dsp/spectral/spectral.hpp"
 #include "gpio.h"
+#include "usart.h"
 
-uint32_t buf_start_offset = 0;
+volatile uint32_t buf_start_offset = 0;
 signal_t audio_data;
 ei_impulse_result_t result;
 
 
 int audio_signal_get_data(size_t offset, size_t length, float *out_ptr)
 {
-    numpy::int16_to_float((int16_t*) dma_buffer + buf_start_offset + offset, out_ptr, length);
+    numpy::int16_to_float( dma_buffer + buf_start_offset + offset, out_ptr, length);
     return 0;
 }
 
@@ -21,17 +22,19 @@ void classifier_init(){
     run_classifier_init();
 }
 
-uint32_t classify_slice(uint32_t offset){
+uint32_t classify_slice(volatile uint32_t offset){
     buf_start_offset = offset;
     audio_data.total_length = EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE;
     audio_data.get_data = &audio_signal_get_data;
     result = { nullptr };
-    auto err = run_classifier_continuous(&audio_data, &result, true);
+    HAL_GPIO_TogglePin(BLUE_LED_GPIO_Port, BLUE_LED_Pin);
+    auto err = run_classifier_continuous(&audio_data, &result, false, true);
     HAL_GPIO_TogglePin(BLUE_LED_GPIO_Port, BLUE_LED_Pin);
 
     if (err != EI_IMPULSE_OK) {
         return 2;
     }
+
 
     uint32_t max_index = 2;
     for (size_t ix = 0; ix < EI_CLASSIFIER_LABEL_COUNT; ix++) {
@@ -40,8 +43,20 @@ uint32_t classify_slice(uint32_t offset){
         }
     }
     if (result.classification[max_index].value < 0.85) {
+//        for (size_t ix = 0; ix < 10; ix++) {
+//            sprintf(buf, "%d %d %d %d %d %d %d %d %d %d\n",
+//            dma_buffer[ix], dma_buffer[ix+1],
+//            dma_buffer[ix+2], dma_buffer[ix+3],
+//            dma_buffer[ix+4], dma_buffer[ix+5],
+//            dma_buffer[ix+6], dma_buffer[ix+7],
+//            dma_buffer[ix+8], dma_buffer[ix+9]);
+//            HAL_UART_Transmit(&huart1, (uint8_t*) buf, strlen(buf), 1000);
+//        }
         return 2;
     }
+//        char buf[256];
+//        sprintf(buf, "%f, %f, %f\n", result.classification[0].value, result.classification[1].value, result.classification[2].value);
+//        HAL_UART_Transmit(&huart1, (uint8_t*) buf, strlen(buf), 1000);
 
     return max_index;
 }
